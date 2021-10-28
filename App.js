@@ -1,35 +1,60 @@
-import { StatusBar } from 'expo-status-bar';
+
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import 'react-native-gesture-handler';
 import SignupScreen from './src/components/SignupScreen';
 import SigninScreen from './src/components/SigninScreen';
 import AccountScreen from './src/components/AccountScreen';
+import TrackListScreen from './src/components/TrackListScreen';
 import TrackCreateScreen from './src/components/TrackCreateScreen';
 import TrackDetailScreen from './src/components/TrackDetailScreen';
-import TrackListScreen from './src/components/TrackListScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-function HomeScreen({ navigation }) {
+
+const Stack = createStackNavigator();
+
+function Tracks() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <Text onPress ={() => {navigation.navigate("Signup")}}> Clicke me</Text>
-    </View>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="TrackList" component={TrackListScreen} />
+      <Stack.Screen name="TrackDetail" component={TrackDetailScreen} />
+  </Stack.Navigator>
   );
 }
+const StackTwo = createStackNavigator();  
+const loginflow = () => {
+  return (
+    <StackTwo.Navigator screenOptions={{ headerShown: false }} initialRouteName="SignIn">
+      <StackTwo.Screen name="SignIn" component={SigninScreen} />
+      <StackTwo.Screen name="SignUp" component={SignupScreen} />
+    </StackTwo.Navigator>
+  )
+}
+const Tab = createBottomTabNavigator();
+const mainflow = () => {
+  return (
 
-const Stack = createNativeStackNavigator();
+    <Tab.Navigator>
+      <Tab.Screen name="trackListFlow" component={Tracks } />
+      <Tab.Screen name="TrackCreate" component={TrackCreateScreen} />
+      <Tab.Screen name="Account" component={AccountScreen} />
+    </Tab.Navigator>
+  )
+}
+
+const AuthNavigator = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
-      </Stack.Navigator>
+      <AuthNavigator.Navigator  screenOptions={{ headerShown: false }} >
+        <AuthNavigator.Screen name="loginflow" component={loginflow} />
+        <AuthNavigator.Screen name="mainflow" component={mainflow} />
+      </AuthNavigator.Navigator>
     </NavigationContainer>
   );
 }
