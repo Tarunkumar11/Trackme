@@ -12,7 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { Provider as AuthProvider } from './src/context/AuthContext';
 
 
 const Stack = createStackNavigator();
@@ -50,12 +50,14 @@ const AuthNavigator = createNativeStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <AuthNavigator.Navigator  screenOptions={{ headerShown: false }} >
-        <AuthNavigator.Screen name="loginflow" component={loginflow} />
-        <AuthNavigator.Screen name="mainflow" component={mainflow} />
-      </AuthNavigator.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <AuthNavigator.Navigator  screenOptions={{ headerShown: false }} >
+          <AuthNavigator.Screen name="loginflow" component={loginflow} />
+          <AuthNavigator.Screen name="mainflow" component={mainflow} />
+        </AuthNavigator.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 
